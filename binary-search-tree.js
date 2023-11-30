@@ -15,9 +15,9 @@ class BinarySearchTree {
      * Returns the tree. Uses iteration. */
     insert(val) {
         // If the tree is empty, create a new node with the value and set it as the root
-        // Then return the tree to allow for method chaining
         if (!this.root) {
             this.root = new Node(val);
+            // Then return the tree to allow for method chaining
             return this;
         }
 
@@ -59,28 +59,36 @@ class BinarySearchTree {
 
     /** insertRecursively(val): insert a new node into the BST with value val.
      * Returns the tree. Uses recursion. */
-
-    insertRecursively(val) {
-        // Create a new node
-        const newNode = new Node(val);
-
+    insertRecursively(val, currentNode = this.root) {
         // If the tree is empty, set the root to the new node
         if (!this.root) {
-            this.root = newNode;
-            return;
+            this.root = new Node(val);
+            // Then return the tree to allow for method chaining
+            return this;
         }
 
-        // If the value inserted is greater than the root, go right
-        if (val > this.root.val) {
-            // If there is no right child, set the right child to the new node
-            if (!this.root.right) {
-                this.root.right = newNode;
-            } else {
-                // Recursively insert the value into the right subtree
-                this.insert(val, this.root.right);
+        // If value is less than the current node's value go left
+        if (val < currentNode.val) {
+            // If the left child does not exist, insert the new node here
+            if (!currentNode.left) {
+                currentNode.left = new Node(val);
+                // Return the tree to allow for method chaining
+                return this;
             }
+            // If the left child exists, continue recursively in the left subtree.
+            return this.insertRecursively(val, currentNode.left);
         }
-        // If the value inserted is less than the root, go left
+        // Value greater? Right subtree
+        else {
+            // If the right child does not exist, insert the new node here
+            if (!currentNode.right) {
+                currentNode.right = new Node(val);
+                // Return the tree to allow for method chaining
+                return this;
+            }
+            // If the right child exists, continue recursively in the right subtree.
+            return this.insertRecursively(val, currentNode.right);
+        }
     }
 
     /** find(val): search the tree for a node with value val.
