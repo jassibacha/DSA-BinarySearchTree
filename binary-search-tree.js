@@ -94,27 +94,115 @@ class BinarySearchTree {
     /** find(val): search the tree for a node with value val.
      * return the node, if found; else undefined. Uses iteration. */
 
-    find(val) {}
+    find(val) {
+        // If the tree is empty, return undefined as there are no nodes to search.
+        if (!this.root) {
+            return undefined;
+        }
+
+        // Start the search from the root of the tree.
+        let currentNode = this.root;
+        // This variable will be used to store the node if it is found.
+        let found = false;
+
+        // Continue the search as long as there is a node to examine and the node hasn't been found.
+        while (currentNode && !found) {
+            // If the value to find is less than the current node's value, go left.
+            if (val < currentNode.val) {
+                currentNode = currentNode.left;
+            }
+            // If the value to find is greater than the current node's value, go right.
+            else if (val > currentNode.val) {
+                currentNode = currentNode.right;
+            }
+            // If the value is equal to the current node's value, mark it as found.
+            else {
+                found = currentNode;
+            }
+        }
+
+        // If the node wasn't found (found remains false), return undefined.
+        if (!found) {
+            return undefined;
+        }
+
+        // Return the found node.
+        return found;
+    }
 
     /** findRecursively(val): search the tree for a node with value val.
      * return the node, if found; else undefined. Uses recursion. */
 
-    findRecursively(val) {}
+    findRecursively(val, currentNode = this.root) {
+        // Return undefined if the tree is empty or the value isn't found.
+        if (!currentNode) return undefined;
+
+        // Search in the left subtree if the value is less than the current node's value.
+        if (val < currentNode.val) {
+            if (!currentNode.left) return undefined;
+            return this.findRecursively(val, currentNode.left);
+        }
+        // Search in the right subtree if the value is greater than the current node's value.
+        else if (val > currentNode.val) {
+            if (!currentNode.right) return undefined;
+            return this.findRecursively(val, currentNode.right);
+        }
+
+        // Return the current node when the value is found.
+        return currentNode;
+    }
 
     /** dfsPreOrder(): Traverse the array using pre-order DFS.
      * Return an array of visited nodes. */
 
-    dfsPreOrder() {}
+    dfsPreOrder() {
+        let data = []; // Store the visited nodes
+        let currentNode = this.root; // Start at the root
+
+        // Traverse the tree using pre-order DFS
+        function traverse(node) {
+            data.push(node.val); // Visit the current node
+            if (node.left) traverse(node.left); // Go left
+            if (node.right) traverse(node.right); // Go right
+        }
+
+        traverse(currentNode); // Start the traversal
+        return data; // Return the visited nodes
+    }
 
     /** dfsInOrder(): Traverse the array using in-order DFS.
      * Return an array of visited nodes. */
 
-    dfsInOrder() {}
+    dfsInOrder() {
+        let data = []; // Store the visited nodes
+        let currentNode = this.root; // Start at the root
+
+        function traverse(node) {
+            if (node.left) traverse(node.left); // Go left if theres a left
+            data.push(node.val); // Visit the current node
+            if (node.right) traverse(node.right); // Go right if there's a right
+        }
+
+        traverse(currentNode); // Start the traversal
+        return data; // Return the visited nodes
+    }
 
     /** dfsPostOrder(): Traverse the array using post-order DFS.
      * Return an array of visited nodes. */
 
-    dfsPostOrder() {}
+    dfsPostOrder() {
+        let data = []; // Store the visited nodes
+        let currentNode = this.root; // Start at the root
+
+        function traverse(node) {
+            if (node.left) traverse(node.left); // Go left if theres a left
+            if (node.right) traverse(node.right); // Go right if there's a right
+            data.push(node.val); // Visit the current node
+        }
+
+        traverse(currentNode); // Start the traversal
+        return data; // Return the visited nodes
+    }
 
     /** bfs(): Traverse the array using BFS.
      * Return an array of visited nodes. */
